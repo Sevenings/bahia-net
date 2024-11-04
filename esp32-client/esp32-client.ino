@@ -29,27 +29,110 @@ void setupDisplay() {
 }
 
 
-int debug_a = 0;
-int debug_b = 0;
-int debug_c = 0;
-int debug_d = 0;
+
+// Edição de caracteres
+// ----------------------------
+
+#define TAM_MSG 32
+
+char mensagem[TAM_MSG] = "";
+int cursor = 0;
+int clock_reference = 0;
+
+void displayUI() {
+    display.clearDisplay();
+
+    display.setTextColor(SSD1306_WHITE);
+    display.setTextSize(1);
+
+    // Mostrar mensagem
+    display.setCursor(0, 0);
+    for (int i = 0; i < TAM_MSG; i++) {
+        display.setTextColor(SSD1306_WHITE);
+        if (i == cursor && ( millis() - clock_reference )/500 % 2 == 0 ) {
+            display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
+        }
+
+        display.print(mensagem[i]);
+    }
+
+
+    display.display();
+}
+
+
+void letraAnterior() {
+    if (mensagem[cursor] < 'a' || mensagem[cursor] > 'z') {
+        mensagem[cursor] = 'z';
+        return;
+    } 
+    if (mensagem[cursor] == 'a') {
+        mensagem[cursor] = ' ';
+        return;
+    }
+
+    mensagem[cursor] -= 1;
+
+}
+
+
+void proximaLetra() {
+    if (mensagem[cursor] < 'a' || mensagem[cursor] > 'z') {
+        mensagem[cursor] = 'a';
+        return;
+    } 
+
+    if (mensagem[cursor] == 'z') {
+        mensagem[cursor] = ' ';
+        return;
+    }
+
+    mensagem[cursor] += 1;
+
+}
+
+
+void voltarCursor() {
+    if (cursor == 0) {
+        cursor = TAM_MSG - 1;
+        return;
+    }
+    cursor--;
+}
+
+
+void avancarCursor() {
+    if (cursor == TAM_MSG - 1) {
+        cursor = 0;
+        return;
+    }
+    cursor++;
+}
+
 
 void onLeftButtonPressed() {
-    debug_a++;
+    letraAnterior();
 }
 
 void onRightButtonPressed() {
-    debug_b++;
+    proximaLetra();
 }
 
 void onNoButtonPressed() {
-    debug_c++;
+    cursor--;
+    clock_reference = millis();
 }
 
 void onYesButtonPressed() {
-    debug_d++;
+    cursor++;
+    clock_reference = millis();
 }
 
+
+
+
+// Camada de leitura de entradas
+// -----------------------------
 
 #define pinLeftButton 34
 #define pinRightButton 35
@@ -114,18 +197,7 @@ void setup() {
 void loop() {
 
     lerEntradas();
-
-    display.clearDisplay();
-
-    display.setCursor(0, 0);
-    display.setTextColor(SSD1306_WHITE);
-
-    display.print(F("Left button: ")); display.println(debug_a);
-    display.print(F("Right button: ")); display.println(debug_b);
-    display.print(F("No button: ")); display.println(debug_c);
-    display.print(F("Yes button: ")); display.println(debug_d);
-    
-    display.display();
+    displayUI();
 
     delay(50);
 
