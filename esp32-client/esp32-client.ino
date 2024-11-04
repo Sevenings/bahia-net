@@ -29,42 +29,105 @@ void setupDisplay() {
 }
 
 
+int debug_a = 0;
+int debug_b = 0;
+int debug_c = 0;
+int debug_d = 0;
+
+void onLeftButtonPressed() {
+    debug_a++;
+}
+
+void onRightButtonPressed() {
+    debug_b++;
+}
+
+void onNoButtonPressed() {
+    debug_c++;
+}
+
+void onYesButtonPressed() {
+    debug_d++;
+}
+
 
 #define pinLeftButton 34
 #define pinRightButton 35
-#define pinYesButton 32
-#define pinNoButton 33
+#define pinNoButton 32
+#define pinYesButton 33
+
+
+
+void setupEntradas() {
+    pinMode(pinLeftButton, INPUT);
+    pinMode(pinRightButton, INPUT);
+    pinMode(pinNoButton, INPUT);
+    pinMode(pinYesButton, INPUT);
+}
+
+
+
+int leftButton = LOW;
+int rightButton = LOW;
+int noButton = LOW;
+int yesButton = LOW;
+
+void lerEntradas() {
+    int prev_leftButton = leftButton;
+    int prev_rightButton = rightButton;
+    int prev_noButton = noButton;
+    int prev_yesButton = yesButton;
+
+    leftButton = digitalRead(pinLeftButton);
+    rightButton = digitalRead(pinRightButton);
+    noButton = digitalRead(pinNoButton);
+    yesButton = digitalRead(pinYesButton);
+
+    if (prev_leftButton == LOW and leftButton == HIGH) {
+        onLeftButtonPressed();
+    }
+
+    if (prev_rightButton == LOW and rightButton == HIGH) {
+        onRightButtonPressed();
+    }
+
+    if (prev_noButton == LOW and noButton == HIGH) {
+        onNoButtonPressed();
+    }
+
+    if (prev_yesButton == LOW and yesButton == HIGH) {
+        onYesButtonPressed();
+    }
+}
+
+
+
+
 
 
 void setup() {
     Serial.begin(115200);
     setupDisplay();
-
-    pinMode(pinLeftButton, INPUT);
-    pinMode(pinRightButton, INPUT);
-    pinMode(pinYesButton, INPUT);
-    pinMode(pinNoButton, INPUT);
+    setupEntradas();
 }
 
 void loop() {
-    int leftButton = digitalRead(pinLeftButton);
-    int rightButton = digitalRead(pinRightButton);
-    int yesButton = digitalRead(pinYesButton);
-    int noButton = digitalRead(pinNoButton);
+
+    lerEntradas();
 
     display.clearDisplay();
 
     display.setCursor(0, 0);
     display.setTextColor(SSD1306_WHITE);
 
-    display.print(F("Left button: ")); display.println(leftButton);
-    display.print(F("Right button: ")); display.println(rightButton);
-    display.print(F("Yes button: ")); display.println(yesButton);
-    display.print(F("No button: ")); display.println(noButton);
+    display.print(F("Left button: ")); display.println(debug_a);
+    display.print(F("Right button: ")); display.println(debug_b);
+    display.print(F("No button: ")); display.println(debug_c);
+    display.print(F("Yes button: ")); display.println(debug_d);
     
     display.display();
 
-    delay(100);
+    delay(50);
 
 }
 
