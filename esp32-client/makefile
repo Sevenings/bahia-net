@@ -20,7 +20,11 @@ run:
 monitor:
 	arduino-cli monitor -p $(PORT) -c baudrate=$(BAUDRATE)
 
+attach:
+	arduino-cli board attach -p $(PORT) -b $(FQBN) $(SKETCH)
+
 clear:
 	rm -r build
 
 all: compile run monitor
+

@@ -134,21 +134,6 @@ void onYesButtonPressed() {
 // Camada de leitura de entradas
 // -----------------------------
 
-#define pinLeftButton 34
-#define pinRightButton 35
-#define pinNoButton 32
-#define pinYesButton 33
-
-
-
-void setupEntradas() {
-    pinMode(pinLeftButton, INPUT);
-    pinMode(pinRightButton, INPUT);
-    pinMode(pinNoButton, INPUT);
-    pinMode(pinYesButton, INPUT);
-}
-
-
 
 int leftButton = LOW;
 int rightButton = LOW;
@@ -156,31 +141,6 @@ int noButton = LOW;
 int yesButton = LOW;
 
 void lerEntradas() {
-    int prev_leftButton = leftButton;
-    int prev_rightButton = rightButton;
-    int prev_noButton = noButton;
-    int prev_yesButton = yesButton;
-
-    leftButton = digitalRead(pinLeftButton);
-    rightButton = digitalRead(pinRightButton);
-    noButton = digitalRead(pinNoButton);
-    yesButton = digitalRead(pinYesButton);
-
-    if (prev_leftButton == LOW and leftButton == HIGH) {
-        onLeftButtonPressed();
-    }
-
-    if (prev_rightButton == LOW and rightButton == HIGH) {
-        onRightButtonPressed();
-    }
-
-    if (prev_noButton == LOW and noButton == HIGH) {
-        onNoButtonPressed();
-    }
-
-    if (prev_yesButton == LOW and yesButton == HIGH) {
-        onYesButtonPressed();
-    }
 }
 
 
