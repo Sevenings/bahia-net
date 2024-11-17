@@ -2,6 +2,7 @@
 #define INPUT_MANAGER_HPP
 
 #include <Arduino.h>
+#include "Events.hpp"
 
 class InputManager {
 public:
@@ -14,40 +15,12 @@ public:
 
 
     // Variaveis dos Hooks
-    void (*onLeftButtonPressed)();
-    void (*onRightButtonPressed)();
-    void (*onNoButtonPressed)();
-    void (*onYesButtonPressed)();
-    void (*onYesButtonHolded)();
-    
+    void (*eventHandler)(Event);
 
-    // Funções de attach hooks
-    // ----------------------------
-    
-    // Left Pressed
-    void attachHookOnLeftButtonPressed(const auto& func) {
-        onLeftButtonPressed = func;
+    void emit(Event event) {
+        eventHandler(event);
     }
 
-    // Right Pressed
-    void attachHookOnRightButtonPressed(const auto& func) {
-        onRightButtonPressed = func;
-    }
-
-    // No Pressed
-    void attachHookOnNoButtonPressed(const auto& func) {
-        onNoButtonPressed = func;
-    }
-
-    // Yes Pressed
-    void attachHookOnYesButtonPressed(const auto& func) {
-        onYesButtonPressed = func;
-    }
-
-    // Yes Holded
-    void attachHookOnYesButtonHolded(const auto& func) {
-        onYesButtonHolded = func;
-    }
 
     // Constructor
     InputManager() {};
@@ -79,17 +52,17 @@ public:
 
         // Apertou o botão Left
         if (prev_leftButton == LOW and leftButton == HIGH) {
-            onLeftButtonPressed();
+            emit(LEFT_BUTTON_PRESSED);
         }
 
         // Apertou o botão Right
         if (prev_rightButton == LOW and rightButton == HIGH) {
-            onRightButtonPressed();
+            emit(RIGHT_BUTTON_PRESSED);
         }
 
         // Apertou o botão No
         if (prev_noButton == LOW and noButton == HIGH) {
-            onNoButtonPressed();
+            emit(NO_BUTTON_PRESSED);
         }
 
         // Apertou o botão Yes
@@ -104,10 +77,11 @@ public:
 
             // Apertou 
             if (holdTime - prev_holdTime < 1000) {
-                onYesButtonPressed();
+                emit(YES_BUTTON_PRESSED);
+
             } else {
-            // Soltou
-                onYesButtonHolded();
+            // Segurou
+                emit(YES_BUTTON_HOLDED);
             }
         }
     }
@@ -117,7 +91,6 @@ private:
     int rightButton;
     int noButton;
     int yesButton;
-
     int holdTime;
 };
 

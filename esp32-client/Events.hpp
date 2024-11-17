@@ -1,0 +1,13 @@
+#ifndef EVENTS_HPP
+#define EVENTS_HPP
+
+typedef enum Event {
+    LEFT_BUTTON_PRESSED,
+    RIGHT_BUTTON_PRESSED,
+    NO_BUTTON_PRESSED,
+    YES_BUTTON_PRESSED,
+    YES_BUTTON_HOLDED
+} Event;
+
+#endif // !EVENTS_HPPEVENTS_HPP
+
