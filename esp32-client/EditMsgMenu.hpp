@@ -1,9 +1,13 @@
 #ifndef EDIT_MSG_INTERFACE_HPP
+#define EDIT_MSG_INTERFACE_HPP
+
 #define TAM_MSG 21
 
+#include "Routes.hpp"
 #include "Menu.hpp"
 #include "Display.hpp"
 #include "Events.hpp"
+#include "Routes.hpp"
 
 
 class EditMsgMenu : public Menu {
@@ -57,16 +61,7 @@ public:
                 break;
 
             case YES_BUTTON_HOLDED:
-                display->clearDisplay();
-
-                display->setTextColor(SSD1306_WHITE);
-                display->setTextSize(2);
-
-                // Mostrar mensagem
-                display->setCursor(0, 24);
-                display->print("YES HOLDED!");
-
-                display->display();
+                Navigator::navigateTo(Navigator::SHOW_MSG_MENU);
                 break;
         }
     }

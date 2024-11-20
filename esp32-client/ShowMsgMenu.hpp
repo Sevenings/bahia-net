@@ -1,6 +1,7 @@
 #ifndef SHOW_MSG_MENU_HPP
 #define SHOW_MSG_MENU_HPP
 
+#include "Events.hpp"
 #include "Menu.hpp"
 #include "Display.hpp"
 
@@ -27,6 +28,8 @@ public:
 
         display->display();
     }
+
+    void recvEvent(Event event) {}
 
 private:
     Adafruit_SSD1306 *display;

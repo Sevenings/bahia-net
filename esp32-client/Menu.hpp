@@ -7,9 +7,9 @@
 class Menu {
 public:
 
-    virtual void displayUI() {}
+    virtual void displayUI() = 0; 
 
-    virtual void recvEvent(Event) {}
+    virtual void recvEvent(Event) = 0;
 };
 
 
